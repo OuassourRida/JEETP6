@@ -2,9 +2,9 @@ package org.example.jeetp6.dao;
 
 import org.example.jeetp6.model.Student;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Studentdao {
 Dbconnection db =new Dbconnection();
@@ -21,5 +21,23 @@ public void studentspush(String name,double age){
     }
 
 }
+public List<Student> getStudent(){
+    try {
+        List<Student> students =new ArrayList<>();
+        Statement stm=conn.createStatement();
+        ResultSet rs=stm.executeQuery("SELECT * FROM client ");
+        while(rs.next()){
+            Student student=new Student();
+            student.setName(rs.getString(1));
+            student.setAge(rs.getDouble(2));
+            students.add(student);
 
+        }
+        return students;
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    }
 }
+
+

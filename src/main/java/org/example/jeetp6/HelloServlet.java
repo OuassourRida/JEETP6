@@ -1,9 +1,13 @@
 package org.example.jeetp6;
 
 import java.io.*;
+import java.util.List;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import org.example.jeetp6.dao.Studentdao;
 import org.example.jeetp6.metier.Studentmet;
 import org.example.jeetp6.model.Student;
 
@@ -14,14 +18,15 @@ public class HelloServlet extends HttpServlet {
         message = "Hello World!";
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
 
         // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+        Studentdao std=new Studentdao();
+        List<Student> students=std.getStudent();
+        request.setAttribute("students",students);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");
+        dispatcher.forward(request, response);
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
